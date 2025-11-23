@@ -1,4 +1,4 @@
-name = "Newb X Legacy"
+name = "×× Newb x Unwind 5.0 ××"
 version = [0, 16, 0]
 min_supported_mc_version = [1, 21, 111]
 description = '''
@@ -7,9 +7,9 @@ description = '''
 %v
 §3https://devendrn.github.io/newb-shader/
 ''' # %w = patch warning, %v = version
-authors = ["devendrn"]
+authors = ["Hazelntz", "devendrn"]
 url = "https://devendrn.github.io/newb-shader/"
-uuid = "95f774cf-4afa-73e7-a21a-72146307b1d2" # Use https://www.uuidgenerator.net/version4
+uuid = "f8628f6a-3f81-4c59-8c6a-2a55172518d1" # Use https://www.uuidgenerator.net/version4
 materials = ["Sky", "RenderChunk", "Actor", "ActorGlint", "EndSky", "Clouds", "SunMoon", "Weather", "ItemInHandTextured", "ItemInHandColor", "ItemInHandColorGlint", "Stars"]
 
 [info] 
@@ -29,6 +29,13 @@ credits = '''
 # right-most subpack is enabled by default
 
 [[subpack]]
+define = "NO_WAVE"
+materials = ["RenderChunk"]
+description = '''
+No Wave 
+'''
+
+[[subpack]]
 define = "ROUNDED_CLOUDS"
 materials = ["Clouds"]
 description = '''
@@ -36,38 +43,17 @@ Rounded Clouds
 '''
 
 [[subpack]]
-define = "BOX_CLOUDS"
-materials = ["Clouds", "RenderChunk"]
+define = "VOLUMETRIC_CLOUDS"
+materials = ["Clouds"]
 description = '''
-Box Clouds
+Volumetric Clouds
 '''
 
 [[subpack]]
-define = "CHUNK_ANIM"
-materials = ["RenderChunk"]
+define = "VANILLA_CLOUDS"
+materials = ["Clouds"]
 description = '''
-Chunk loading animation
-'''
-
-[[subpack]]
-define = "NO_WAVE_NO_FOG"
-materials = ["RenderChunk"]
-description = '''
-No fog and wave effects
-'''
-
-[[subpack]]
-define = "NO_FOG"
-materials = ["RenderChunk"]
-description = '''
-No fog effect
-'''
-
-[[subpack]]
-define = "NO_WAVE"
-materials = ["RenderChunk"]
-description = '''
-No wave effects
+Vanilla Clouds
 '''
 
 #[[subpack]]
@@ -76,10 +62,3 @@ No wave effects
 #description = '''
 #Many effects disabled. A bit lighter!
 #'''
-
-[[subpack]]
-define = "DEFAULT"
-materials = []
-description = '''
-Default
-'''

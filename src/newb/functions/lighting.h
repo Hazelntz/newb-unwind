@@ -83,14 +83,14 @@ vec3 nlLighting(
     #endif
 
     // direct light from top
-    float dirLight = shadow*(1.0-uv1.x*nightFactor)*lightIntensity;
+    float dirLight = shadow*(1.5-uv1.x*nightFactor)*lightIntensity;
     light += dirLight*sunLightTint(dayFactor, env.rainFactor, FOG_COLOR);
 
     // extra indirect light
     light += vec3_splat(0.3*lit.y*uv1.y*(1.2-shadow)*lightIntensity);
 
     // torch light
-    light += torchLight*(1.0-(max(shadow, 0.65*lit.y)*dayFactor*(1.0-0.3*env.rainFactor)));
+    light += torchLight*1.5*(1.0-(max(shadow, 0.75*lit.y)*dayFactor*(1.0-0.3*env.rainFactor)));
   }
 
   // darken at crevices

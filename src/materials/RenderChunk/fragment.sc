@@ -1,4 +1,4 @@
-$input v_color0, v_color1, v_fog, v_refl, v_texcoord0, v_lightmapUV, v_extra
+$input v_color0, v_color1, v_fog, v_refl, v_texcoord0, v_lightmapUV, v_extra, v_position
 
 #include <bgfx_shader.sh>
 #include <newb/main.sh>
@@ -7,13 +7,31 @@ SAMPLER2D_AUTOREG(s_MatTexture);
 SAMPLER2D_AUTOREG(s_SeasonsTexture);
 SAMPLER2D_AUTOREG(s_LightMapTexture);
 
+uniform vec4 ViewPositionAndTime;
+
 void main() {
   #if defined(DEPTH_ONLY_OPAQUE) || defined(DEPTH_ONLY) || defined(INSTANCING)
     gl_FragColor = vec4(1.0,1.0,1.0,1.0);
     return;
   #endif
 
+  vec3 worldPos = v_position;
   vec4 diffuse = texture2D(s_MatTexture, v_texcoord0);
+  vec2 offset = 1.0 / vec2(textureSize(s_MatTexture, 0));
+
+  // Ambil sampel + Geser texture
+  vec3 neighbor = texture2D(s_MatTexture, v_texcoord0 + offset * vec2(-0.1, -0.1)).rgb; // vec2 = Jauh / deket nya offset texture & simulasi arah cahaya
+
+  // Pseudo shadow
+  vec3 contrast = diffuse.rgb - neighbor;
+
+  // Optimasi (efek cuma dirender deket gweh)
+  float dist = length(worldPos);
+  float faded = clamp(1.0 - dist / 16.0, 0.0, 1.0); // 16.0 buat atur jauh / deket nya jarak render efek
+
+  // Akhiran efek
+  diffuse.rgb += contrast * 0.5 * faded; // buat atur soft atau strong efek nya
+  
   vec4 color = v_color0;
 
   #ifdef ALPHA_TEST
@@ -46,7 +64,7 @@ void main() {
 
   diffuse.rgb *= color.rgb;
   diffuse.rgb += glow;
-
+  
   if (v_extra.b > 0.9) {
     diffuse.rgb += v_refl.rgb*v_refl.a;
   } else if (v_refl.a > 0.0) {

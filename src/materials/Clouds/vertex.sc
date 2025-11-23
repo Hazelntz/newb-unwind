@@ -29,7 +29,7 @@ void main() {
 
   float t = ViewPositionAndTime.w;
   float rain = detectRain(FogAndDistanceControl.xyz);
-
+  
   nl_skycolor skycol = nlOverworldSkyColors(rain, FogColor.rgb);
   vec3 pos = a_position;
   vec3 worldPos;
@@ -43,11 +43,28 @@ void main() {
       worldPos = mul(model, vec4(pos, 1.0)).xyz;
 
       color.rgb = skycol.zenith + skycol.horizonEdge;
-      color.rgb += dot(color.rgb, vec3(0.3,0.4,0.3))*a_position.y;
-      color.rgb *= 1.0 - 0.8*rain;
+      // color.rgb -= dot(color.rgb, vec3(0.3,0.4,0.3))*a_position.y;
+      color.rgb *= 1.0 - 0.4*rain;
       color.rgb = colorCorrection(color.rgb);
-      color.a = NL_CLOUD0_OPACITY * fog_fade(worldPos.xyz);
+      // transparan atas
+      float topFade = clamp(1.0 - a_position.y, 0.0, 1.0);
+      // ambil posisi kamera & posisi cloud plane
+      float camY = ViewPositionAndTime.y;
 
+      #if BGFX_SHADER_LANGUAGE_GLSL
+        float cloudY = model[3][1];
+      #else
+        float cloudY = model[1][3];
+      #endif
+
+      // buat fade yg bisa dibalik
+      float finalFade = topFade;
+      // jika kamera lebih tinggi dari awan → balik gradasi
+      if (camY > cloudY) {
+        finalFade = 1.0 - topFade;
+      }
+      color.a = NL_CLOUD0_OPACITY * finalFade * fog_fade(worldPos.xyz);
+      
       // clouds.png has two non-overlaping layers:
       // r=unused, g=layers, b=reference, a=unused
       // g=0 (layer 0), g=1 (layer 1)
@@ -55,6 +72,7 @@ void main() {
       if (isL2) {
         #ifdef NL_CLOUD0_MULTILAYER
           worldPos.y += 64.0;
+          color.a *= 0.4;
         #else
           worldPos = vec3(0.0,0.0,0.0);
           color.a = 0.0;
