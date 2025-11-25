@@ -27,10 +27,10 @@ void main() {
 
   // Optimasi (efek cuma dirender deket gweh)
   float dist = length(worldPos);
-  float faded = clamp(1.0 - dist / 16.0, 0.0, 1.0); // 16.0 buat atur jauh / deket nya jarak render efek
+  float faded = clamp(1.0 - dist / 8.0, 0.0, 1.0); // 16.0 buat atur jauh / deket nya jarak render efek
 
   // Akhiran efek
-  diffuse.rgb += contrast * 0.5 * faded; // buat atur soft atau strong efek nya
+  diffuse.rgb += contrast * 0.65 * faded; // buat atur soft atau strong efek nya
   
   vec4 color = v_color0;
 

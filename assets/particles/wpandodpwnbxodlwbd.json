@@ -8,6 +8,25 @@
 				"texture": "textures/particle/ripple.png"
 			}
 		},
+		// Ah, i got you here buddy. here's tutorial how to do these thing instead of trying copy paste my work
+		// . 
+		// first, you need minecraft vanilla rain splash json. as you can see in this json folder there are another json called rain_splash.json (this is vanilla rain splash i meant) 
+		// . 
+		// then, you need to create your own splash json. if you don't know how to do this, just open your browser then search for snowstorm app website, there you can make your own splash json easily
+		// . 
+		// don't forget to make animation sprite for your particle
+		// . 
+		// set motion to dynamic, and rotation to math.random(0, 360), it will give you natural random rotation for your rain splash particle
+		// . 
+		// due to vanilla splash doesn't touch the ground, you need to offset your particle a little bit low (Y)
+		// . 
+		// another things you don't understand can be learned from bedrock wiki or documentation
+		// . 
+		// important step is to spawn your custom particle by editing vanilla splash particle (i mean add some event to spawn your particle) 
+		// . 
+		// so i can tell you that how to make custom splash particle is simply make your own animated particle then spawn your particle by adding "on creation event" in vanilla splash json
+		// . 
+		// that's it, YOU'RE WELCOME
 		"components": {
 			"minecraft:emitter_rate_manual": {
 				"max_particles": 600

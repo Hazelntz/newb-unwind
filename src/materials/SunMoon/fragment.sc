@@ -33,12 +33,12 @@ void main() {
     if (isMoon) {
       uv = vec2(0.25,0.5)*(floor(uv*vec2(4.0,2.0)) + 0.5 + 10.0*v_pos.xz);
       vec3 preNight = vec3(0.2, 0.2, 0.2);
-      vec3 midNight = vec3(0.3, 0.31, 0.5);
+      vec3 midNight = vec3(0.25, 0.33, 0.5);
       vec3 moonBloom = mix(preNight, midNight, night);
       color.rgb += moonBloom * g * 2.0;
     } else {
       uv = 0.5 + 10.0*v_pos.xz;
-      vec3 preDay = vec3(0.2, 0.13, 0.14);
+      vec3 preDay = vec3(0.25, 0.13, 0.14);
       vec3 midDay = vec3(0.3, 0.27, 0.25);
       vec3 sunBloom = mix(preDay, midDay, day);
       color.rgb += sunBloom * g * 2.0;
