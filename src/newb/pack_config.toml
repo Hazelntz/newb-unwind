@@ -1,4 +1,4 @@
-name = "§lNEWB x UNWIND 5.0"
+name = "§lNEWB x UNWIND §65.5"
 version = [0, 16, 0]
 min_supported_mc_version = [1, 21, 111]
 description = '''
@@ -47,6 +47,13 @@ define = "VOLUMETRIC_CLOUDS"
 materials = ["Clouds"]
 description = '''
 Volumetric Clouds
+'''
+
+[[subpack]]
+define = "SOFT_CLOUDS"
+materials = ["Clouds"]
+description = '''
+Soft Clouds
 '''
 
 [[subpack]]

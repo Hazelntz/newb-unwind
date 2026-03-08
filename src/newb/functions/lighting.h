@@ -26,6 +26,8 @@ vec3 sunLightTint(float dayFactor, float rain, vec3 FOG_COLOR) {
   return mix(vec3(0.65,0.65,0.75), clearTint, r*r);
 }
 
+float luminance(vec3 x) { return dot(x, vec3(0.21, 0.71, 0.08)); }
+
 vec3 nlLighting(
   nl_skycolor skycol, nl_environment env, vec3 wPos, out vec3 torchColor, vec3 COLOR, vec3 FOG_COLOR,
   vec2 uv1, vec2 lit, bool isTree, float shade, highp float t
@@ -44,8 +46,9 @@ vec3 nlLighting(
     torchColor = NL_OVERWORLD_TORCH_COL;
   }
 
-  float torchAttenuation = (NL_TORCH_INTENSITY*uv1.x)/(0.5-0.45*lit.x);
-
+  float torchFactor = smoothstep(0.0, 1.0, uv1.x);
+  float torchAttenuation = (NL_TORCH_INTENSITY*torchFactor)/(0.5-0.475*lit.x);
+  
   #ifdef NL_BLINKING_TORCH
     torchAttenuation *= 1.0 - 0.19*noise1D(t*8.0);
   #endif
@@ -83,22 +86,30 @@ vec3 nlLighting(
     #endif
 
     // direct light from top
-    float dirLight = shadow*(1.5-uv1.x*nightFactor)*lightIntensity;
+    float dirLight = shadow*(1.4-uv1.x*nightFactor)*lightIntensity;
     light += dirLight*sunLightTint(dayFactor, env.rainFactor, FOG_COLOR);
 
     // extra indirect light
     light += vec3_splat(0.3*lit.y*uv1.y*(1.2-shadow)*lightIntensity);
 
     // torch light
-    light += torchLight*1.5*(1.0-(max(shadow, 0.75*lit.y)*dayFactor*(1.0-0.3*env.rainFactor)));
+    // light += torchLight*(1.0-(max(shadow, 0.75*lit.y)*dayFactor*(1.0-0.3*env.rainFactor)));
+    // torch light
+    float lum = luminance(light);
+    light *= 1.0 - 0.4 * uv1.x;
+    light += torchLight / (0.4 + lum);
   }
 
   // darken at crevices
-  light *= COLOR.g > 0.35 ? 1.0 : 0.8;
+  float col_max = max(COLOR.r, max(COLOR.g, COLOR.b)); 
+    if (col_max < 0.7) {       
+        light *= 0.5; 
+  };
+  // light *= COLOR.g > 0.35 ? 1.0 : 0.8;
 
   // brighten tree leaves
   if (isTree) {
-    light *= 1.25;
+    light *= 1.8;
   }
 
   return light;
