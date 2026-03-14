@@ -17,17 +17,17 @@ void main() {
 
   vec3 worldPos = v_position;
   vec4 diffuse = texture2D(s_MatTexture, v_texcoord0);
-  // vec2 offset = 1.0 / vec2(textureSize(s_MatTexture, 0));
+  vec2 offset = 1.0 / vec2(textureSize(s_MatTexture, 0));
 
   // Ambil sampel + Geser texture
-  // vec3 neighbor = texture2D(s_MatTexture, v_texcoord0 + offset * vec2(-0.1, -0.1)).rgb; // vec2 = Jauh / deket nya offset texture & simulasi arah cahaya
+  vec3 neighbor = texture2D(s_MatTexture, v_texcoord0 + offset * vec2(-0.1, -0.1)).rgb; // vec2 = Jauh / deket nya offset texture & simulasi arah cahaya
   // Pseudo shadow
-  // vec3 contrast = diffuse.rgb - neighbor;
+  vec3 contrast = diffuse.rgb - neighbor;
   // Optimasi (efek cuma dirender deket gweh)
-  // float dist = length(worldPos);
-  // float faded = clamp(1.0 - dist / 8.0, 0.0, 1.0); // 16.0 buat atur jauh / deket nya jarak render efek
+  float dist = length(worldPos);
+  float faded = clamp(1.0 - dist / 8.0, 0.0, 1.0); // 16.0 buat atur jauh / deket nya jarak render efek
   // Akhiran efek
-  // diffuse.rgb += contrast * 0.65 * faded; // buat atur soft atau strong efek nya
+  diffuse.rgb += contrast * 0.65 * faded; // buat atur soft atau strong efek nya
   
   vec4 color = v_color0;
 
