@@ -218,6 +218,8 @@
 */
 
 #ifdef NO_WAVE
+  #undef NL_CLOUD_TYPE
+  #define NL_CLOUD_TYPE 0
   #undef NL_PLANTS_WAVE
   #undef NL_LANTERN_WAVE
   #undef NL_UNDERWATER_WAVE
